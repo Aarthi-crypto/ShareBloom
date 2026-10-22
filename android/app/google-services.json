@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "13645684723",
+    "project_id": "sharebloom-922c3",
+    "storage_bucket": "sharebloom-922c3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13645684723:android:acc0342259939491a7bc86",
+        "android_client_info": {
+          "package_name": "com.example.share_bloom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13645684723-qeatjndfq65movirf9me81n36r8lrs56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.share_bloom",
+            "certificate_hash": "38fb4c02cb36c9a2aefb73393f1f101b314e2c0c"
+          }
+        },
+        {
+          "client_id": "13645684723-e0us1vdfdamks9mpf2tnpqv8lu8ra923.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiJAMEPZ5FLMqeZ3VfZxG_oNTNyZ7EIDM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13645684723-e0us1vdfdamks9mpf2tnpqv8lu8ra923.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "13645684723-r3c7d6mjmep8sqqnbcutvjs2pb8s7a8q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.shareBloom"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
