@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShareBloom</title>
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <link rel="manifest" href="assets/pwa/manifest.json">
+  <meta name="theme-color" content="#16a34a">
+</head>
+
+<body class="logged-out" onload="initApp()">
+
+
+  <!-- Background slider -->
+  <div class="bg-slider"></div>
+  <div class="bg-overlay"></div>
+
+  <!-- TOP NAV -->
+  <div class="nav">
+    <div class="container nav-inner">
+      <div class="brand" onclick="go('home')">
+        <img src="assets/images/logo.jpg" class="brand-logo" alt="ShareBloom Logo">
+        <div>
+          <div class="brand-name">ShareBloom</div>
+          <div class="brand-sub">Sharing made meaningful</div>
+        </div>
+      </div>
+
+      <div class="nav-links" id="navUserSlot"></div>
+    </div>
+  </div>
+
+  <!-- MAIN WRAPPER -->
+  <div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar" style="display:none;">
+      <div class="side-user">
+        <div class="avatar" id="sideAvatar">SB</div>
+        <div>
+          <div class="side-name" id="sideName">Guest</div>
+          <div class="side-role" id="sideRole">Not signed in</div>
+        </div>
+      </div>
+
+      <!-- Sender Menu -->
+      <nav class="side-nav" id="senderMenu">
+        <button class="side-link" onclick="go('home')">🏠 Home</button>
+        <button class="side-link" onclick="go('dashboard')">📊 Dashboard</button>
+
+        <div class="side-divider"></div>
+
+        <button class="side-link" onclick="go('share')">🌸 Share Item</button>
+        <button class="side-link" onclick="go('ai')">🤖 AI Matching</button>
+        <button class="side-link" onclick="go('senderRequests')">📩 Requests Received</button>
+
+        <div class="side-divider"></div>
+
+        <button class="side-link" onclick="go('profile')">👤 Profile</button>
+        <button class="side-link" onclick="go('settings')">⚙️ Settings</button>
+
+        <div class="side-divider"></div>
+
+        <button class="side-link danger" onclick="logout()">🚪 Logout</button>
+      </nav>
+
+      <!-- Receiver Menu -->
+      <nav class="side-nav hidden" id="receiverMenu">
+        <button class="side-link" onclick="go('home')">🏠 Home</button>
+        <button class="side-link" onclick="go('receiverDashboard')">📊 Dashboard</button>
+
+        <div class="side-divider"></div>
+
+        <button class="side-link" onclick="go('available')">📦 Available Resources</button>
+        <button class="side-link" onclick="go('myRequests')">📝 My Requests</button>
+        <button class="side-link" onclick="go('notifications')">🔔 Notifications</button>
+
+        <div class="side-divider"></div>
+
+        <button class="side-link" onclick="go('profile')">👤 Profile</button>
+        <button class="side-link" onclick="go('settings')">⚙️ Settings</button>
+
+        <div class="side-divider"></div>
+
+        <button class="side-link danger" onclick="logout()">🚪 Logout</button>
+      </nav>
+
+      <div class="side-footer">
+        <div class="muted small">Built for society • ShareBloom</div>
+      </div>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- HOME PAGE -->
+      <section class="page" id="page-home">
+        <div class="card hero-card">
+          <div class="hero-left">
+            <div class="big-title">Sharing that reaches the right hands 🌸</div>
+            <div class="tagline">
+              ShareBloom connects people and NGOs using location-based matching,
+              smart requests, and a simple sharing flow.
+            </div>
+
+            <div class="badges">
+              <div class="badge">AI Matching</div>
+              <div class="badge">Same-City</div>
+              <div class="badge">Sender & Receiver</div>
+              <div class="badge">Community First</div>
+            </div>
+
+            <!-- ✅ FIXED: Added IDs so JS can hide/show properly -->
+            <div class="btn-row">
+              <button id="homeGetStartedBtn" class="btn btn-primary" onclick="go('login')">Get Started</button>
+              <button id="homeLoginBtn" class="btn btn-ghost" onclick="go('login')">Login</button>
+            </div>
+
+            <div class="footer">Simple • Secure • Society-focused</div>
+          </div>
+
+          <div class="hero-right">
+            <div class="mini-card">
+              <div class="mini-title">🌿 Why ShareBloom?</div>
+              <ul class="mini-list">
+                <li>Share items instead of discarding</li>
+                <li>Nearby NGOs receive what they need</li>
+                <li>Fast coordination with smart matching</li>
+              </ul>
+            </div>
+
+            <!-- ✅ FIXED: Added ID so JS can hide Quick Actions when logged out -->
+            <div class="mini-card" id="homeQuickActions">
+              <div class="mini-title">✨ Quick Actions</div>
+              <div class="quick-actions">
+                <button class="btn btn-soft" onclick="go('share')">Share an Item</button>
+                <button class="btn btn-soft" onclick="go('available')">View Resources</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LOGIN PAGE -->
+      <section class="page" id="page-login">
+        <div class="card auth-card">
+          <div class="auth-head">
+            <h2>Welcome to ShareBloom</h2>
+            <p class="muted">Login or Register in one place</p>
+          </div>
+
+          <div class="auth-tabs">
+            <button id="tabLogin" class="tab active" onclick="setAuthMode('login')">Login</button>
+            <button id="tabRegister" class="tab" onclick="setAuthMode('register')">Register</button>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label>Email</label>
+              <input id="authEmail" type="email" placeholder="example@gmail.com"/>
+            </div>
+
+            <div>
+              <label>Password</label>
+              <input id="authPass" type="password" placeholder="••••••••"/>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label>Role</label>
+              <select id="authRole">
+                <option value="sender">Sender (Share Items)</option>
+                <option value="receiver">Receiver (NGO / Need Items)</option>
+              </select>
+            </div>
+
+            <div>
+              <label>City / Location</label>
+              <input id="authCity" type="text" placeholder="Madurai"/>
+            </div>
+          </div>
+
+          <div id="registerExtra" class="grid-2 hidden">
+            <div>
+              <label>Full Name</label>
+              <input id="authName" type="text" placeholder="Your Name"/>
+            </div>
+
+            <div>
+              <label>Phone</label>
+              <input id="authPhone" type="text" placeholder="9876543210"/>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="authSubmit()">Continue</button>
+            <button class="btn btn-ghost" onclick="go('home')">Back</button>
+          </div>
+
+          <div class="small muted" style="margin-top:12px;">
+            If your email is already verified, you’ll be logged in instantly.
+          </div>
+        </div>
+      </section>
+
+      <!-- SENDER DASHBOARD -->
+      <section class="page" id="page-dashboard">
+        <div class="card">
+          <h2>Sender Dashboard</h2>
+          <p class="muted">Your sharing activity and AI matches</p>
+
+          <div class="dash-grid">
+            <div class="stat">
+              <div class="stat-title">Items Shared</div>
+              <div class="stat-num" id="statShared">0</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">AI Matches</div>
+              <div class="stat-num" id="statMatches">0</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">Requests Received</div>
+              <div class="stat-num" id="statRequests">0</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="btn-row">
+            <button class="btn btn-soft" onclick="go('share')">Share New Item</button>
+            <button class="btn btn-soft" onclick="go('senderRequests')">View Requests</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- RECEIVER DASHBOARD -->
+      <section class="page" id="page-receiverDashboard">
+        <div class="card">
+          <h2>Receiver Dashboard</h2>
+          <p class="muted">View resources in your city and manage requests.</p>
+
+          <div class="dash-grid">
+            <div class="stat">
+              <div class="stat-title">Available Resources</div>
+              <div class="stat-num" id="statAvailable">0</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">My Requests</div>
+              <div class="stat-num" id="statMyRequests">0</div>
+            </div>
+
+            <div class="stat">
+              <div class="stat-title">Notifications</div>
+              <div class="stat-num" id="statNotify">0</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="btn-row">
+            <button class="btn btn-soft" onclick="go('available')">View Resources</button>
+            <button class="btn btn-soft" onclick="go('myRequests')">My Requests</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHARE ITEM -->
+      <section class="page" id="page-share">
+        <div class="card">
+          <h2>Share an Item</h2>
+          <p class="muted">Add details so AI can match with the nearest NGO in your city.</p>
+
+          <div class="grid-2">
+            <div>
+              <label>Resource Type</label>
+              <select id="itemType" onchange="toggleOtherType()">
+                <option>Clothes</option>
+                <option>Books</option>
+                <option>Furniture</option>
+                <option>Electronics</option>
+                <option>Food</option>
+                <option>Others</option>
+              </select>
+              <input id="itemTypeOther" class="hidden" type="text" placeholder="Enter resource type"/>
+            </div>
+
+            <div>
+              <label>Condition</label>
+              <select id="itemCondition" onchange="toggleOtherCondition()">
+                <option>New</option>
+                <option>Like New</option>
+                <option>Good</option>
+                <option>Usable</option>
+                <option>Others</option>
+              </select>
+              <input id="itemConditionOther" class="hidden" type="text" placeholder="Enter condition"/>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label>Quantity</label>
+              <input id="itemQty" type="number" min="1" value="1"/>
+            </div>
+
+            <div>
+              <label>Sender City</label>
+              <input id="itemCity" type="text" placeholder="Madurai"/>
+            </div>
+          </div>
+
+          <!-- IMAGE UPLOAD -->
+          <div>
+            <label>Resource Photo (Optional)</label>
+            <input id="itemPhoto" type="file" accept="image/*"/>
+            <div class="muted small" style="margin-top:8px;">
+              Uploading helps receivers understand the item better.
+            </div>
+          </div>
+
+          <div>
+            <label>Description</label>
+            <textarea id="itemDesc" placeholder="Example: Wooden chair set, clean and usable"></textarea>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="shareItem()">Submit for Matching</button>
+            <button class="btn btn-ghost" onclick="go('dashboard')">Back</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI MATCH -->
+      <section class="page" id="page-ai">
+        <div class="card">
+          <h2>AI Matching</h2>
+          <p class="muted">
+            Shows the nearest NGO match within the same city (based on item type + location).
+          </p>
+
+          <div id="matchBox" class="match-box">
+            Share an item first to see AI matches.
+          </div>
+        </div>
+      </section>
+
+      <!-- SENDER REQUESTS RECEIVED -->
+      <section class="page" id="page-senderRequests">
+        <div class="card">
+          <h2>Requests Received</h2>
+          <p class="muted">Requests from receivers for your shared resources.</p>
+
+          <!-- ✅ SEARCH + FILTER -->
+          <div class="grid-2" style="margin-top:14px;">
+            <div>
+              <label>Search Requests</label>
+              <input id="senderReqSearch" type="text" placeholder="Search by item / city / receiver...">
+            </div>
+
+            <div>
+              <label>Status Filter</label>
+              <select id="senderReqFilter">
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="senderRequestsList" class="list"></div>
+        </div>
+      </section>
+
+      <!-- RECEIVER: AVAILABLE RESOURCES -->
+      <section class="page" id="page-available">
+        <div class="card">
+          <h2>Available Resources</h2>
+          <p class="muted">Resources shared in your city. Request what you need.</p>
+
+          <!-- ✅ SEARCH + FILTER -->
+          <div class="grid-2" style="margin-top:14px;">
+            <div>
+              <label>Search Resources</label>
+              <input id="availSearch" type="text" placeholder="Search by item / description / city...">
+            </div>
+
+            <div>
+              <label>Type Filter</label>
+              <select id="availFilter">
+                <option value="all">All</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Books">Books</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Food">Food</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="availableList" class="list"></div>
+        </div>
+      </section>
+
+      <!-- RECEIVER: MY REQUESTS -->
+      <section class="page" id="page-myRequests">
+        <div class="card">
+          <h2>My Requests</h2>
+          <p class="muted">Track your request status.</p>
+
+          <!-- ✅ SEARCH + FILTER -->
+          <div class="grid-2" style="margin-top:14px;">
+            <div>
+              <label>Search My Requests</label>
+              <input id="myReqSearch" type="text" placeholder="Search by item / city / status...">
+            </div>
+
+            <div>
+              <label>Status Filter</label>
+              <select id="myReqFilter">
+                <option value="all">All</option>
+                <option value="pending">Pending</option>
+                <option value="accepted">Accepted</option>
+                <option value="rejected">Rejected</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="myRequestsList" class="list"></div>
+        </div>
+      </section>
+
+      <!-- RECEIVER: NOTIFICATIONS -->
+      <section class="page" id="page-notifications">
+        <div class="card">
+          <h2>Notifications</h2>
+          <p class="muted">Updates when a sender accepts your request.</p>
+
+          <!-- ✅ SEARCH -->
+          <div style="margin-top:14px;">
+            <label>Search Notifications</label>
+            <input id="notifySearch" type="text" placeholder="Search by item / sender / city...">
+          </div>
+
+          <div id="notifyList" class="list"></div>
+        </div>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="page" id="page-profile">
+        <div class="card">
+          <h2>Profile</h2>
+          <p class="muted">Manage your personal details.</p>
+
+          <div class="grid-2">
+            <div>
+              <label>Name</label>
+              <input id="profName" type="text"/>
+            </div>
+            <div>
+              <label>Phone</label>
+              <input id="profPhone" type="text"/>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label>Email</label>
+              <input id="profEmail" type="text" disabled/>
+            </div>
+            <div>
+              <label>City</label>
+              <input id="profCity" type="text"/>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="saveProfile()">Save Profile</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="page" id="page-settings">
+        <div class="card">
+          <h2>Settings</h2>
+          <p class="muted">Privacy, help, and app preferences.</p>
+
+          <div class="settings-grid">
+            <div class="setting-item">
+              <div class="setting-title">🔐 Privacy & Security</div>
+              <div class="muted small">Manage password and secure access.</div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-title">🔔 Notifications</div>
+              <div class="muted small">Enable match alerts and request updates.</div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-title">❓ Help Center</div>
+              <div class="muted small">Get guidance and FAQs.</div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-title">ℹ️ About ShareBloom</div>
+              <div class="muted small">Learn about the purpose and flow.</div>
+            </div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn btn-ghost" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
+  <script src="assets/js/app.js"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("assets/pwa/service-worker.js");
+    }
+  </script>
+
+</body>
+</html>
